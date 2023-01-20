@@ -10,7 +10,7 @@ from random import randint
 # Global consts so they're easier to change
 WIDTH = 64
 HEIGHT = 64
-SCALE = 2
+SCALE = 5
 FRAMERATE = 15
 MINIMUM_FOOD = 1  # how many food to have on screen at a minimum
 
