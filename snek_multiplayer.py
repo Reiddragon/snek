@@ -10,6 +10,7 @@ from random import randint
 # Global consts so they're easier to change
 WIDTH = 64
 HEIGHT = 64
+SCALE = 2
 FRAMERATE = 15
 MINIMUM_FOOD = 1  # how many food to have on screen at a minimum
 
@@ -65,7 +66,7 @@ class Snake:
         self.tail.pop()  # then pop the tail
 
         # finally see if the snek should any the food
-        for i in range(len(food)).__reversed__():
+        for i in reversed(range(len(food))):
             if self.tail[0] == food[i]:
                 # if yes, add a new segment to the snek, and pop the food
                 self.tail.insert(1, self.tail[0])
@@ -79,45 +80,45 @@ class Snake:
         # a bunch of checks to see where to fill in the gaps so only the
         # segments adjacent in self.tail are visually connected
         pyxel.rect(
-            *map(lambda x: x * 5, self.tail[0]),
-            4, 4, self.colour
+            *map(lambda x: x * SCALE, self.tail[0]),
+            SCALE - 1, SCALE - 1, self.colour
         )
         for i in range(1, len(self.tail)):
             pyxel.rect(
-                *map(lambda x: x * 5, self.tail[i]),
-                4, 4, self.colour
+                *map(lambda x: x * SCALE, self.tail[i]),
+                SCALE - 1, SCALE - 1, self.colour
             )
 
             if self.tail[i][0] < self.tail[i - 1][0]:
                 pyxel.line(
-                    self.tail[i][0] * 5 + 4,
-                    self.tail[i][1] * 5,
-                    self.tail[i][0] * 5 + 4,
-                    self.tail[i][1] * 5 + 3,
+                    self.tail[i][0] * SCALE + SCALE - 1,
+                    self.tail[i][1] * SCALE,
+                    self.tail[i][0] * SCALE + SCALE - 1,
+                    self.tail[i][1] * SCALE + SCALE - 2,
                     self.colour
                 )
             elif self.tail[i][0] > self.tail[i - 1][0]:
                 pyxel.line(
-                    self.tail[i][0] * 5 - 1,
-                    self.tail[i][1] * 5,
-                    self.tail[i][0] * 5 - 1,
-                    self.tail[i][1] * 5 + 3,
+                    self.tail[i][0] * SCALE - 1,
+                    self.tail[i][1] * SCALE,
+                    self.tail[i][0] * SCALE - 1,
+                    self.tail[i][1] * SCALE + SCALE - 2,
                     self.colour
                 )
             elif self.tail[i][1] < self.tail[i - 1][1]:
                 pyxel.line(
-                    self.tail[i][0] * 5,
-                    self.tail[i][1] * 5 + 4,
-                    self.tail[i][0] * 5 + 3,
-                    self.tail[i][1] * 5 + 4,
+                    self.tail[i][0] * SCALE,
+                    self.tail[i][1] * SCALE + SCALE - 1,
+                    self.tail[i][0] * SCALE + SCALE - 2,
+                    self.tail[i][1] * SCALE + SCALE - 1,
                     self.colour
                 )
             elif self.tail[i][1] > self.tail[i - 1][1]:
                 pyxel.line(
-                    self.tail[i][0] * 5,
-                    self.tail[i][1] * 5 - 1,
-                    self.tail[i][0] * 5 + 3,
-                    self.tail[i][1] * 5 - 1,
+                    self.tail[i][0] * SCALE,
+                    self.tail[i][1] * SCALE - 1,
+                    self.tail[i][0] * SCALE + SCALE - 2,
+                    self.tail[i][1] * SCALE - 1,
                     self.colour
                 )
 
@@ -146,7 +147,11 @@ class Snake:
 # the food to make it worth making a new class for it
 class App:
     def __init__(self):
-        pyxel.init(WIDTH * 5, HEIGHT * 5, fps=FRAMERATE, title='Sneky Boi')
+        pyxel.init(
+            WIDTH * SCALE, HEIGHT * SCALE,
+            fps=FRAMERATE,
+            title='Sneky Boi'
+        )
         self.s = []
         self.s.append(Snake(
             48, 32,
@@ -221,8 +226,8 @@ class App:
 
         for f in self.f:
             pyxel.rect(
-                *map(lambda x: x * 5, f),
-                4, 4, 8
+                *map(lambda x: x * SCALE, f),
+                SCALE - 1, SCALE - 1, 8
             )
 
 
